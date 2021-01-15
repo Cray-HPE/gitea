@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vcs-gitea-files
+  namespace: services
+data:
+  app.ini: |-
+    ; This file lists the default values used by Gitea
+    ; Copy required sections to your own app.ini (default is custom/conf/app.ini)
+    ; and modify as needed.
+
+    ; see https://docs.gitea.io/en-us/config-cheat-sheet/ for additional documentation.
+
+    ; App name that shows in every page title
+    APP_NAME = Cray VCS
+    ; Change it if you run locally
+    RUN_USER = git
+    ; Either "dev", "prod" or "test", default is "dev"
+    RUN_MODE = prod
+
+    [repository]
+    ; Disable the ability to interact with repositories using the HTTP protocol
+    DISABLE_HTTP_GIT = false
+
+    [repository.upload]
+    ; Whether repository file uploads are enabled. Defaults to `true`
+    ENABLED = true
+    ; Path for uploads. Defaults to `data/tmp/uploads` (tmp gets deleted on gitea restart)
+    TEMP_PATH = data/tmp/uploads
+    ; One or more allowed types, e.g. image/jpeg|image/png. Nothing means any file type
+    ALLOWED_TYPES =
+    ; Max size of each file in megabytes. Defaults to 3MB
+    FILE_MAX_SIZE = 3
+    ; Max number of files per upload. Defaults to 5
+    MAX_FILES = 5
+
+    [server]
+    ; The protocol the server listens on. One of 'http', 'https', 'unix' or 'fcgi'.
+    PROTOCOL = http
+    DOMAIN = {{ .Values.externalHostname }}
+    ; ROOT_URL = %(PROTOCOL)s://%(DOMAIN)s:%(HTTP_PORT)s/
+    ROOT_URL = https://%(DOMAIN)s{{ .Values.uriPrefix }}
+    ; The address to listen on. Either a IPv4/IPv6 address or the path to a unix socket.
+    HTTP_ADDR = 0.0.0.0
+    HTTP_PORT = 3000
+    ; Local (DMZ) URL for Gitea workers (such as SSH update) accessing web service.
+    ; In most cases you do not need to change the default value.
+    ; Alter it only if your SSH server node is not the same as HTTP node.
+    ; Do not set this variable if PROTOCOL is set to 'unix'.
+    LOCAL_ROOT_URL = http://localhost:3000/
+    ; Disable SSH feature when not available
+    DISABLE_SSH = true
+    ; Whether to use the builtin SSH server or not.
+    START_SSH_SERVER = false
+    ; Gitea will create a authorized_keys file by default when it is not using the internal ssh server
+    ; If you intend to use the AuthorizedKeysCommand functionality then you should turn this off.
+    SSH_CREATE_AUTHORIZED_KEYS_FILE = false
+    ; Disable CDN even in "prod" mode
+    OFFLINE_MODE = true
+    DISABLE_ROUTER_LOG = false
+    ; Default path for App data
+    APP_DATA_PATH = data
+    ; Application level GZIP support
+    ENABLE_GZIP = false
+    ; Application profiling (memory and cpu)
+    ; For "web" command it listens on localhost:6060
+    ; For "serve" command it dumps to disk at PPROF_DATA_PATH as (cpuprofile|memprofile)_<username>_<temporary id>
+    ENABLE_PPROF = false
+    ; PPROF_DATA_PATH, use an absolute path when you start gitea as service
+    PPROF_DATA_PATH = data/tmp/pprof
+    ; Enables git-lfs support. true or false, default is false.
+    LFS_START_SERVER = false
+    ; Where your lfs files reside, default is data/lfs.
+    LFS_CONTENT_PATH = data/lfs
+    ; LFS authentication secret, change this yourself
+    LFS_JWT_SECRET =
+    ; LFS authentication validity period (in time.Duration), pushes taking longer than this may fail.
+    LFS_HTTP_AUTH_EXPIRY = 20m
+
+    [database]
+    ; Either "mysql", "postgres", "mssql" or "sqlite3", it's your choice
+    DB_TYPE = postgres
+    HOST = gitea-vcs-postgres
+    NAME = service_db
+
+
+    ; Use PASSWD = `your password` for quoting if you use special characters in the password.
+
+    ; For Postgres, either "disable" (default), "require", or "verify-full"
+    ; For MySQL, either "false" (default), "true", or "skip-verify"
+    SSL_MODE = disable
+    ; Show the database generated SQL
+    LOG_SQL = true
+
+    [admin]
+    ; Disallow regular (non-admin) users from creating organizations.
+    DISABLE_REGULAR_ORG_CREATION = false
+
+    [security]
+    ; Whether the installer is disabled
+    INSTALL_LOCK = true
+    ; !!CHANGE THIS TO KEEP YOUR USER DATA SAFE!!
+    SECRET_KEY = PUT_RANDOM_SECRET_KEY_HERE
+    ; For reverse proxy
+    REVERSE_PROXY_AUTHENTICATION_USER = X-Auth-Userid
+    REVERSE_PROXY_AUTHENTICATION_EMAIL = X-Auth-Email
+
+    [service]
+    ; Whether a new user needs to confirm their email when registering.
+    REGISTER_EMAIL_CONFIRM = false
+    ; Disallow registration, only allow admins to create accounts.
+    DISABLE_REGISTRATION = true
+    ; Each new user will get the value of this setting copied into their profile
+    DEFAULT_KEEP_EMAIL_PRIVATE = true
+    ; Default value for AllowCreateOrganization
+    ; Every new user will have rights set to create organizations depending on this setting
+    DEFAULT_ALLOW_CREATE_ORGANIZATION = true
+    ; Default value for EnableDependencies
+    ; Repositories will use dependencies by default depending on this setting
+    DEFAULT_ENABLE_DEPENDENCIES = true
+    ; Enable heatmap on users profiles.
+    ENABLE_USER_HEATMAP = false
+    ; Show Registration button
+    SHOW_REGISTRATION_BUTTON = false
+    ; Enable reverse proxy
+    ENABLE_REVERSE_PROXY_AUTHENTICATION = true
+    ENABLE_REVERSE_PROXY_AUTO_REGISTRATION = true
+    ENABLE_REVERSE_PROXY_EMAIL = true
+
+    [mailer]
+    ENABLED = false
+
+    [cache]
+    ; Either "memory", "redis", or "memcache", default is "memory"
+    ADAPTER = memory
+
+    [session]
+    ; Either "memory", "file", or "redis", default is "memory"
+    PROVIDER = memory
+
+    [picture]
+    ; This value will always be true in offline mode.
+    DISABLE_GRAVATAR = true
+
+
+    [log]
+    ; Either "console", "file", "conn", "smtp" or "database", default is "console"
+    ; Use comma to separate multiple modes, e.g. "console, file"
+    MODE = console
+    ; Either "Trace", "Debug", "Info", "Warn", "Error", "Critical", default is "Trace"
+    LEVEL = Trace
+    REDIRECT_MACARON_LOG = false
+
+    ; For "console" mode only
+    [log.console]
+    LEVEL = Trace
+
+    [other]
+    ; Show template execution time in the footer
+    SHOW_FOOTER_TEMPLATE_LOAD_TIME = false
+  setup.sh: |-
+{{ .Files.Get "files/setup.sh" | indent 4 }}

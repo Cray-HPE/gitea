@@ -1,0 +1,110 @@
+# Please refer to https://stash.us.cray.com/projects/CLOUD/repos/cray-charts/browse/stable/cray-service/values.yaml?at=refs%2Fheads%2Fmaster
+# for more info on values you can set/override
+# Note that cray-service.containers[*].image and cray-service.initContainers[*].image map values are one of the only structures that
+# differ from the standard kubernetes container spec:
+# image:
+#   repository: ""
+#   tag: "" (default = "latest")
+#   pullPolicy: "" (default = "IfNotPresent")
+
+externalHostname: vcs.local
+uriPrefix: /vcs
+global:
+  authGateway: services/services-gateway
+
+cray-service:
+  storageClass: ceph-cephfs-external
+  type: Deployment
+  nameOverride: vcs
+  containers:
+    - name: vcs
+      image:
+        repository: cache/gitea
+        tag: 1.9.3
+      ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+      livenessProbe:
+        httpGet:
+          port: 3000
+          path: /
+        initialDelaySeconds: 20
+        periodSeconds: 3
+      readinessProbe:
+        httpGet:
+          port: 3000
+          path: /
+        initialDelaySeconds: 20
+        periodSeconds: 3
+      lifecycle:
+        postStart:
+          exec:
+            command: ["/bin/bash", "-c", "su - git -c /mnt/gitea-files/setup.sh"]
+      volumeMounts:
+        - name: vcs-data-vol
+          mountPath: /data
+        - name: vcs-files-vol
+          mountPath: /mnt/gitea-files
+        - name: vcs-user-credentials-vol
+          mountPath: /mnt/crayvcs-credentials
+  volumes:
+    - name: vcs-data-vol
+      persistentVolumeClaim:
+        claimName: gitea-vcs-data-claim
+    - name: vcs-files-vol
+      configMap:
+        name: vcs-gitea-files
+        defaultMode: 0755
+    - name: vcs-user-credentials-vol
+      secret:
+        secretName: vcs-user-credentials
+        defaultMode: 0666
+  persistentVolumeClaims:
+    - name: data-claim
+      resources:
+        requests:
+          storage: 50Gi
+  initContainers:
+    - name: setup-config
+      image:
+        repository: baseos/alpine
+        tag: 3.11.5
+      env:
+      - name: POSTGRES_USER
+        valueFrom:
+          secretKeyRef:
+            name: service-account.gitea-vcs-postgres.credentials
+            key: username
+      - name: POSTGRES_PASSWD
+        valueFrom:
+          secretKeyRef:
+            name: service-account.gitea-vcs-postgres.credentials
+            key: password
+      volumeMounts:
+      - name: vcs-data-vol
+        mountPath: /data
+      - name: vcs-files-vol
+        mountPath: /tmp
+      command: ["/bin/sh","-ce"]
+      args: ["rm -f /data/gitea/conf/app.ini &&
+              mkdir -p /data/gitea/conf &&
+              cp /tmp/app.ini /data/gitea/conf/ &&
+              chown -R 1000:1000 /data/gitea/ &&
+              sed -i \"78s/^$/USER = $POSTGRES_USER/\" /data/gitea/conf/app.ini &&
+              sed -i \"81s/^$/PASSWD = $POSTGRES_PASSWD/\" /data/gitea/conf/app.ini &&
+              SECRET_KEY=$(cat /dev/random | tr -cd '[:alnum:]' | head -c 64) &&
+              sed -i \"s/PUT_RANDOM_SECRET_KEY_HERE/$SECRET_KEY/\" /data/gitea/conf/app.ini"]
+  sqlCluster:
+    enabled: true
+    instanceCount: 3
+    postgresVersion: "11"
+    volumeSize: 50Gi
+    users:
+      service_account: []
+    databases:
+      service_db: service_account
+  ingress:
+    enabled: false
+    # turning off base chart for ingress
+    # CASMCMS-3716 to enable

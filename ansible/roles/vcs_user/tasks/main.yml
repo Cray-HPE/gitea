@@ -1,0 +1,23 @@
+# Copyright 2019, Cray Inc. All Rights Reserved.
+---
+# VCS admin user in gitea instance
+- name: Register gitea username
+  shell: "kubectl get secret -n services vcs-user-credentials --template={{ '{{' }}.data.vcs_username{{ '}}' }} | base64 --decode"
+  register: vcs_username_output
+  run_once: true
+
+- set_fact:
+    vcs_username: "{{ vcs_username_output.stdout }}"
+  run_once: true
+
+- name: Register gitea password
+  shell: "kubectl get secret -n services vcs-user-credentials --template={{ '{{' }}.data.vcs_password{{ '}}' }} | base64 --decode"
+  register: vcs_password_output
+  run_once: true
+  no_log: True
+
+- set_fact:
+    vcs_password: "{{ vcs_password_output.stdout }}"
+  run_once: true
+  no_log: True
+
