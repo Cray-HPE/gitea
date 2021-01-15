@@ -1,0 +1,20 @@
+# Copyright 2019, Cray Inc. All Rights Reserved.
+---
+# The URI to the VCS (gitea) API
+vcs_api_uri: /vcs/api/v1
+
+# The base URI to the VCS (gitea) web interface instance
+vcs_base_uri: /vcs
+
+# TODO: separate out the network definitions so we can inherit
+# the NMN base URL as well.
+
+# The URL to the VCS (gitea) API
+vcs_api_url: https://{{ networks.node_management.api_gw_service_dnsname }}{{ vcs_api_uri }}
+
+# The base URL to the VCS (gitea) web interface instance
+vcs_base_url: https://{{ networks.node_management.api_gw_service_dnsname }}{{ vcs_base_uri }}
+
+# The URL for vcs through keycloak-gatekeeper
+vcs_hostname: "vcs.{{ shasta_domain }}"
+

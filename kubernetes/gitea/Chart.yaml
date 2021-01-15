@@ -1,0 +1,14 @@
+apiVersion: v1
+description: Cray VCS
+name: gitea
+home: "scms/gitea"
+version: 1.9.6
+description: "Kubernetes resources for gitea"
+keywords:
+  - gitea
+  - vcs
+sources:
+  - "https://stash.us.cray.com/projects/SCMS/repos/gitea/browse"
+maintainers:
+  - name: rkleinman
+    email: rkleinman@cray.com
