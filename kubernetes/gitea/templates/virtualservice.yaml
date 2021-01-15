@@ -1,0 +1,66 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: gitea-vcs
+    app.kubernetes.io/name: gitea-vcs
+  name: gitea-vcs-web
+  namespace: services
+spec:
+  gateways:
+  - services-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: {{ .Values.uriPrefix }}/
+    - uri:
+        prefix: {{ .Values.uriPrefix }}
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: gitea-vcs.{{ .Release.Namespace}}.svc.cluster.local
+        port:
+          number: 80
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gitea-vcs-external
+  labels:
+    app.kubernetes.io/instance: gitea-vcs
+    app.kubernetes.io/name: gitea-vcs
+spec:
+  gateways:
+  - {{ .Values.global.authGateway }}
+  hosts:
+  - {{ .Values.externalHostname }}
+  http:
+  - match:
+    - authority:
+        exact: {{ .Values.externalHostname }}
+      uri:
+        exact: /
+    redirect:
+      uri: {{ .Values.uriPrefix }}/
+  - match:
+    - authority:
+        exact: {{ .Values.externalHostname }}
+      uri:
+        prefix: {{ .Values.uriPrefix }}/
+    - authority:
+        exact: {{ .Values.externalHostname }}
+      uri:
+        prefix: {{ .Values.uriPrefix }}
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: gitea-vcs.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: 80

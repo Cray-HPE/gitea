@@ -1,0 +1,41 @@
+# Copyright 2020 Hewlett Packard Enterprise Development LP
+---
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: keycloak-vcs-user-{{ .Release.Revision }}
+  labels:
+    {{- include "gitea.labels" . | nindent 4 }}
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: keycloak-vcs-user
+        image: {{ .Values.keycloakImage.repository }}:{{ .Values.keycloakImage.tag }}
+        imagePullPolicy: {{ .Values.keycloakImage.pullPolicy }}
+        env:
+        - name: KEYCLOAK_BASE
+          value: {{ .Values.keycloakBase }}
+        - name: OAUTHLIB_INSECURE_TRANSPORT  # Tell oauthlib to allow http. istio protects the channel
+          value: "1"
+        volumeMounts:
+        - name: keycloak-master-admin-auth-vol
+          mountPath: /mnt/keycloak-master-admin-auth-vol
+        - name: vcs-gitea-files
+          mountPath: /mnt/gitea-files
+        - name: vcs-user-credentials
+          mountPath: /mnt/vcs-user-credentials
+        command:
+        - python
+        - /mnt/gitea-files/keycloak-user.py
+      volumes:
+      - name: keycloak-master-admin-auth-vol
+        secret:
+          secretName: {{ .Values.keycloakMasterAdminSecretName }}
+      - name: vcs-user-credentials
+        secret:
+          secretName: vcs-user-credentials
+      - name: vcs-gitea-files
+        configMap:
+          name: vcs-gitea-files
