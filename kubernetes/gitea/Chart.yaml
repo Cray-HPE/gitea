@@ -2,7 +2,7 @@ apiVersion: v1
 description: Cray VCS
 name: gitea
 home: "scms/gitea"
-version: 1.8.8
+version: 1.8.9
 description: "Kubernetes resources for gitea"
 keywords:
   - gitea
