@@ -15,6 +15,9 @@ global:
 cray-service:
   storageClass: ceph-cephfs-external
   type: Deployment
+  strategy:
+    type: Recreate
+    rollingUpdate: null
   nameOverride: vcs
   containers:
     vcs:
@@ -67,6 +70,8 @@ cray-service:
   persistentVolumeClaims:
     data-claim:
       name: data-claim
+      accessModes:
+        - ReadWriteMany
       resources:
         requests:
           storage: 50Gi
