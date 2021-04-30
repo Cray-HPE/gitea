@@ -69,7 +69,7 @@ cray-service:
         defaultMode: 0666
   persistentVolumeClaims:
     data-claim:
-      name: gitea-vcs-data-claim
+      name: data-claim
       accessModes:
         - ReadWriteMany
       resources:
