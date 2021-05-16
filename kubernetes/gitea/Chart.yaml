@@ -2,7 +2,8 @@ apiVersion: v1
 description: Cray VCS
 name: gitea
 home: "scms/gitea"
-version: 1.9.15
+# The version tag is replaced at build time by the build prep script
+version: @VERSION@
 description: "Kubernetes resources for gitea"
 keywords:
   - gitea

@@ -1,5 +1,4 @@
 // Jenkinsfile to push repo to github
-// Copyright 2021 Hewlett Packard Enterprise Development LP
  
 @Library('dst-shared@master') _
 
