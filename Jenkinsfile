@@ -13,6 +13,20 @@ pipeline {
 
   stages {
 
+    stage('Build Prep') {
+      when {expression {return fileExists("runBuildPrep.sh") == true}}
+      steps {
+          sh "./runBuildPrep.sh"
+      }
+    }
+
+    stage('Linting') {
+      when {expression {return fileExists("runLint.sh") == true}}
+      steps {
+          sh "./runLint.sh"
+      }
+    }
+
     stage('Package') {
       steps {
         packageHelmCharts(chartsPath: "${env.WORKSPACE}/kubernetes",

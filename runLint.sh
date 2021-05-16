@@ -1,4 +1,6 @@
-# Copyright 2019, 2021 Hewlett Packard Enterprise Development LP
+#!/bin/bash
+
+# Copyright 2020-2021 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -19,22 +21,10 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 # (MIT License)
----
-# The URI to the VCS (gitea) API
-vcs_api_uri: /vcs/api/v1
 
-# The base URI to the VCS (gitea) web interface instance
-vcs_base_uri: /vcs
-
-# TODO: separate out the network definitions so we can inherit
-# the NMN base URL as well.
-
-# The URL to the VCS (gitea) API
-vcs_api_url: https://{{ networks.node_management.api_gw_service_dnsname }}{{ vcs_api_uri }}
-
-# The base URL to the VCS (gitea) web interface instance
-vcs_base_url: https://{{ networks.node_management.api_gw_service_dnsname }}{{ vcs_base_uri }}
-
-# The URL for vcs through keycloak-gatekeeper
-vcs_hostname: "vcs.{{ shasta_domain }}"
-
+./install_cms_meta_tools.sh || exit 1
+RC=0
+./cms_meta_tools/copyright_license_check/copyright_license_check.sh || RC=1
+./cms_meta_tools/go_lint/go_lint.sh || RC=1
+rm -rf ./cms_meta_tools
+exit $RC
