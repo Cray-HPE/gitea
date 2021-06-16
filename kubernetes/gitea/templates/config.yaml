@@ -90,7 +90,7 @@ data:
     ; For MySQL, either "false" (default), "true", or "skip-verify"
     SSL_MODE = disable
     ; Show the database generated SQL
-    LOG_SQL = true
+    LOG_SQL = false
 
     [indexer]
     ISSUE_INDEXER_TYPE=db
