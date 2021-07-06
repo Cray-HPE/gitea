@@ -39,9 +39,9 @@ RPM_SOURCE_PATH := ${RPM_BUILD_DIR}/SOURCES/${RPM_SOURCE_NAME}.tar.bz2
 build: rpm_package_source rpm_build_source rpm_build
 
 prepare:
-		rm -rf $(BUILD_DIR)
-		mkdir -p $(BUILD_DIR)/SPECS $(BUILD_DIR)/SOURCES
-		cp $(SPEC_FILE) $(BUILD_DIR)/SPECS/
+		rm -rf ${BUILD_DIR}
+		mkdir -p ${BUILD_DIR}/SPECS ${BUILD_DIR}/SOURCES
+		cp ${SPEC_FILE} ${BUILD_DIR}/SPECS/
 
 rpm_package_source:
 	tar --transform 'flags=r;s,^,/$(RPM_SOURCE_NAME)/,' --exclude .git --exclude dist -cvjf $(RPM_SOURCE_PATH) .
