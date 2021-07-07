@@ -15,12 +15,13 @@ pipeline {
         DESCRIPTION = "Gitea Installer"
         IS_STABLE = getBuildIsStable()
         BUILD_METADATA = getRpmRevision(isStable: env.IS_STABLE)
+        CHART_VERSION = getChartVersion(name: env.NAME, isStable: env.IS_STABLE)
     }
 
     stages {
         stage("Prepare") {
             steps {
-                sh "make prepare"
+                sh "make rpm_prepare"
             }
         }
 
@@ -35,6 +36,7 @@ pipeline {
                 script {
                     publishCsmRpms(component: env.NAME, pattern: "dist/rpmbuild/RPMS/x86_64/*.rpm", arch: "x86_64", isStable: env.IS_STABLE)
                     publishCsmRpms(component: env.NAME, pattern: "dist/rpmbuild/RPMS/*.rpm", arch: "src", isStable: env.IS_STABLE)
+                    publishCsmHelmCharts(component: env.NAME, chartsPath: "${WORKSPACE}/charts/.packaged", isStable: env.IS_STABLE)
                 }
             }
         }
