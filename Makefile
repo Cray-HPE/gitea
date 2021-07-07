@@ -53,6 +53,6 @@ rpm_build_source:
 rpm_build:
 	BUILD_METADATA=$(BUILD_METADATA) rpmbuild -ba $(SPEC_FILE) --define "_topdir $(RPM_BUILD_DIR)"
 
-chart_package:
+chart:
 	helm dep up ${CHART_PATH}/${NAME}
 	helm package ${CHART_PATH}/${NAME} -d ${CHART_PATH}/.packaged --version ${CHART_VERSION}
