@@ -27,7 +27,6 @@ RPM_VERSION ?= $(shell cat .rpm_version)
 SPEC_FILE ?= ${SPEC_NAME}.spec
 SPEC_VERSION ?= $(shell cat .rpm_version)
 BUILD_METADATA ?= "1~development~$(shell git rev-parse --short HEAD)"
-RPM_SPEC_FILE ?= ${NAME}.spec
 RPM_SOURCE_NAME ?= ${RPM_NAME}-${RPM_VERSION}
 RPM_BUILD_DIR ?= $(PWD)/dist/rpmbuild
 RPM_SOURCE_PATH := ${RPM_BUILD_DIR}/SOURCES/${RPM_SOURCE_NAME}.tar.bz2
