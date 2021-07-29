@@ -15,6 +15,7 @@ pipeline {
         DESCRIPTION = "Gitea Installer"
         IS_STABLE = getBuildIsStable()
         BUILD_METADATA = getRpmRevision(isStable: env.IS_STABLE)
+        CHART_NAME = "gitea"
         CHART_VERSION = getChartVersion(version: env.VERSION) 
     }
 
