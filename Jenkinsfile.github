@@ -15,7 +15,7 @@ pipeline {
         DESCRIPTION = "Gitea Installer"
         IS_STABLE = getBuildIsStable()
         BUILD_METADATA = getRpmRevision(isStable: env.IS_STABLE)
-        CHART_VERSION = getChartVersion(name: env.NAME, isStable: env.IS_STABLE)
+        CHART_VERSION = getChartVersion(version: env.VERSION) 
     }
 
     stages {
