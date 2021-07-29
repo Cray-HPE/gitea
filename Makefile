@@ -26,7 +26,7 @@ CHART_PATH ?= kubernetes
 CHART_VERSION ?= local
 
 prep:
-	runBuildPrep.sh
+	./runBuildPrep.sh
 
 chart:
 	helm dep up ${CHART_PATH}/${NAME}
