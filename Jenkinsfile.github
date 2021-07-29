@@ -15,7 +15,8 @@ pipeline {
         DESCRIPTION = "Gitea Installer"
         IS_STABLE = getBuildIsStable()
         BUILD_METADATA = getRpmRevision(isStable: env.IS_STABLE)
-        CHART_NAME = "gitea"
+        VERSION = "1.12.2"
+        CHART_NAME = 'gitea'
         CHART_VERSION = getChartVersion(version: env.VERSION) 
     }
 
@@ -26,7 +27,7 @@ pipeline {
                 sh "make prep"
             }
         }
- 
+
         stage("Chart") {
             steps {
                 sh "make chart"
