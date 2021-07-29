@@ -23,7 +23,7 @@
 # HELM CHART
 NAME ?= gitea
 CHART_PATH ?= kubernetes
-CHART_VERSION ?= @CHART_VERSION@
+CHART_VERSION ?= @VERSION@
 
 prep:
 	./runBuildPrep.sh
