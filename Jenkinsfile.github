@@ -28,6 +28,7 @@ pipeline {
 
         stage('Publish ') {
             steps {
+                script {
                     publishCsmHelmCharts(component: env.NAME, chartsPath: "${WORKSPACE}/kubernetes/.packaged", isStable: env.IS_STABLE)
                 }
             }
