@@ -23,9 +23,28 @@
 # HELM CHART
 NAME ?= gitea
 CHART_PATH ?= kubernetes
-CHART_VERSION ?= local
+CHART_VERSION ?= $(shell head -1 .chart_version)
+GITEA_DOCKER_VERSION ?= $(shell head -1 .gitea_version)
 
+HELM_UNITTEST_IMAGE ?= quintush/helm-unittest:3.3.0-0.2.5
 
-chart:
-	helm dep up ${CHART_PATH}/${NAME}
-	helm package ${CHART_PATH}/${NAME} -d ${CHART_PATH}/.packaged --version ${CHART_VERSION}
+all : runbuildprep lint chart
+chart: chart_setup chart_package chart_test
+
+runbuildprep:
+		./cms_meta_tools/scripts/runBuildPrep.sh
+
+lint:
+		./cms_meta_tools/scripts/runLint.sh
+
+chart_setup:
+		mkdir -p ${CHART_PATH}/.packaged
+		printf "\nglobal:\n  appVersion: ${GITEA_DOCKER_VERSION}" >> ${CHART_PATH}/${NAME}/values.yaml
+
+chart_package:
+		helm dep up ${CHART_PATH}/${NAME}
+		helm package ${CHART_PATH}/${NAME} -d ${CHART_PATH}/.packaged --app-version ${GITEA_DOCKER_VERSION} --version ${CHART_VERSION}
+
+chart_test:
+		helm lint "${CHART_PATH}/${NAME}"
+		docker run --rm -v ${PWD}/${CHART_PATH}:/apps ${HELM_UNITTEST_IMAGE} -3 ${NAME}

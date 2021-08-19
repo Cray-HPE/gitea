@@ -1,4 +1,5 @@
-@Library('csm-shared-library') _
+@Library('cms-meta-tools') _
+@Library('csm-shared-library') __
 
 pipeline {
     agent {
@@ -14,11 +15,34 @@ pipeline {
         NAME = "gitea"
         DESCRIPTION = "Gitea Installer"
         IS_STABLE = getBuildIsStable()
-        BUILD_METADATA = getRpmRevision(isStable: env.IS_STABLE)
-        CHART_VERSION = getChartVersion(name: env.NAME, isStable: env.IS_STABLE)
     }
 
     stages {
+        stage("Clone cms_meta_tools repo") {
+            steps {
+                // This function is defined in cms-meta-tools:vars/cloneCMSMetaTools.groovy
+                cloneCMSMetaTools()
+            }
+        }
+
+        stage("Set Versions") {
+            steps {
+                // This function is defined in cms-meta-tools:vars/setVersionFiles.groovy
+                setVersionFiles()
+            }
+        }
+
+        stage("runBuildPrep") {
+            steps { 
+                sh "make runbuildprep"
+            }
+        }
+
+        stage("Lint") {
+            steps {
+                sh "make lint"
+            }
+        }
 
         stage("Chart") {
             steps {
