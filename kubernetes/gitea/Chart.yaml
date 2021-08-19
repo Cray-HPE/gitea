@@ -2,14 +2,13 @@ apiVersion: v1
 description: Cray VCS
 name: gitea
 home: "scms/gitea"
-# The version tag is replaced at build time by the build prep script
-version: @VERSION@
+version: @CHART_VERSION@
 description: "Kubernetes resources for gitea"
 keywords:
   - gitea
   - vcs
 sources:
-  - "https://stash.us.cray.com/projects/SCMS/repos/gitea/browse"
+  - "https://github.com/Cray-HPE/gitea"
 maintainers:
   - name: rkleinman
     email: rkleinman@cray.com
