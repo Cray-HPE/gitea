@@ -1,4 +1,4 @@
-# Please refer to https://stash.us.cray.com/projects/CLOUD/repos/cray-charts/browse/stable/cray-service/values.yaml?at=refs%2Fheads%2Fmaster
+# Please refer to https://github.com/Cray-HPE/base-charts/blob/master/kubernetes/cray-service/values.yaml
 # for more info on values you can set/override
 # Note that cray-service.containers[*].image and cray-service.initContainers[*].image map values are one of the only structures that
 # differ from the standard kubernetes container spec:
@@ -24,7 +24,7 @@ cray-service:
       name: vcs
       image:
         repository: cache/gitea
-        tag: 1.12.2
+        tag: @GITEA_DOCKER_VERSION@
       ports:
       - name: http
         containerPort: 3000
@@ -80,7 +80,7 @@ cray-service:
       name: setup-config
       image:
         repository: baseos/alpine
-        tag: 3.13.5
+        tag: @ALPINE_DOCKER_VERSION@
       env:
       - name: POSTGRES_USER
         valueFrom:

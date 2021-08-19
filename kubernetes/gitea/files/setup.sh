@@ -1,5 +1,4 @@
 #!/bin/bash
-# Create the admin user for gitea
 # Copyright 2019-2021 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -21,6 +20,9 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 # (MIT License)
+
+# Create the admin user for gitea
+
 echo `date` >> /data/gitea/setup
 rm -f /data/git/.gitconfig.lock
 
