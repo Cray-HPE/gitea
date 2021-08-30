@@ -23,7 +23,7 @@ cray-service:
     vcs:
       name: vcs
       image:
-        repository: cache/gitea
+        repository: docker.io/gitea
         tag: @GITEA_DOCKER_VERSION@
       ports:
       - name: http
