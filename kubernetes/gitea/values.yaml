@@ -115,6 +115,9 @@ cray-service:
       service_account: []
     databases:
       service_db: service_account
+    backup:
+      enabled: true
+      schedule: "10 1 * * *" # Once per day at 1:10AM
   ingress:
     enabled: false
     # turning off base chart for ingress
