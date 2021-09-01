@@ -45,6 +45,13 @@ cray-service:
         postStart:
           exec:
             command: ["/bin/bash", "-c", "su - git -c /mnt/gitea-files/setup.sh"]
+      # For the moment we need to have gitea running as root, until we get the rootless
+      # image working and the corresponding steps to migrate from the rooted image to the
+      # rootless image
+      securityContext:
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
       volumeMounts:
       - name: vcs-data-vol
         mountPath: /data
@@ -106,6 +113,13 @@ cray-service:
               sed -i \"81s/^$/PASSWD = $POSTGRES_PASSWD/\" /data/gitea/conf/app.ini &&
               SECRET_KEY=$(cat /dev/random | tr -cd '[:alnum:]' | head -c 64) &&
               sed -i \"s/PUT_RANDOM_SECRET_KEY_HERE/$SECRET_KEY/\" /data/gitea/conf/app.ini"]
+      # For the moment we need to have gitea running as root, until we get the rootless
+      # image working and the corresponding steps to migrate from the rooted image to the
+      # rootless image
+      securityContext:
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
   sqlCluster:
     enabled: true
     instanceCount: 3
