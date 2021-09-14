@@ -87,7 +87,7 @@ cray-service:
       name: setup-config
       image:
         repository: baseos/alpine
-        tag: @ALPINE_DOCKER_VERSION@
+        tag: 3.13
       env:
       - name: POSTGRES_USER
         valueFrom:
