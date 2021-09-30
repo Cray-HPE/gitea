@@ -51,7 +51,7 @@ data:
     ; Disable SSH feature when not available
     DISABLE_SSH = true
     ; Whether to use the builtin SSH server or not.
-    START_SSH_SERVER = false
+    START_SSH_SERVER = true
     ; Gitea will create a authorized_keys file by default when it is not using the internal ssh server
     ; If you intend to use the AuthorizedKeysCommand functionality then you should turn this off.
     SSH_CREATE_AUTHORIZED_KEYS_FILE = false
