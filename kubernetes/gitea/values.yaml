@@ -23,12 +23,15 @@ cray-service:
     vcs:
       name: vcs
       image:
-        repository: docker.io/gitea
+        repository: docker.io/gitea/gitea
         tag: @GITEA_DOCKER_VERSION@
       ports:
       - name: http
         containerPort: 3000
         protocol: TCP
+      env:
+        - name: GITEA_APP_INI
+          value: "/var/lib/gitea/app.ini"
       livenessProbe:
         httpGet:
           port: 3000
@@ -44,17 +47,14 @@ cray-service:
       lifecycle:
         postStart:
           exec:
-            command: ["/bin/bash", "-c", "su - git -c /mnt/gitea-files/setup.sh"]
-      # For the moment we need to have gitea running as root, until we get the rootless
-      # image working and the corresponding steps to migrate from the rooted image to the
-      # rootless image
+            command: ["/bin/bash", "-c", "/mnt/gitea-files/setup.sh"]
+      # The container already runs as the git user.  We don't want to override this.
       securityContext:
-        runAsGroup: 0
         runAsNonRoot: false
-        runAsUser: 0
+        runAsUser: 1000
       volumeMounts:
       - name: vcs-data-vol
-        mountPath: /data
+        mountPath: /var/lib/gitea
       - name: vcs-files-vol
         mountPath: /mnt/gitea-files
       - name: vcs-user-credentials-vol
@@ -101,25 +101,48 @@ cray-service:
             key: password
       volumeMounts:
       - name: vcs-data-vol
-        mountPath: /data
+        mountPath: /var/lib/gitea
       - name: vcs-files-vol
         mountPath: /tmp
-      command: ["/bin/sh","-ce"]
-      args: ["rm -f /data/gitea/conf/app.ini &&
-              mkdir -p /data/gitea/conf &&
-              cp /tmp/app.ini /data/gitea/conf/ &&
-              chown -R 1000:1000 /data/gitea/ &&
-              sed -i \"78s/^$/USER = $POSTGRES_USER/\" /data/gitea/conf/app.ini &&
-              sed -i \"81s/^$/PASSWD = $POSTGRES_PASSWD/\" /data/gitea/conf/app.ini &&
-              SECRET_KEY=$(cat /dev/random | tr -cd '[:alnum:]' | head -c 64) &&
-              sed -i \"s/PUT_RANDOM_SECRET_KEY_HERE/$SECRET_KEY/\" /data/gitea/conf/app.ini"]
-      # For the moment we need to have gitea running as root, until we get the rootless
-      # image working and the corresponding steps to migrate from the rooted image to the
-      # rootless image
+      # At least for now, to support upgrades, the setup init containers must run as root.
       securityContext:
         runAsGroup: 0
         runAsNonRoot: false
         runAsUser: 0
+      command: ["/bin/sh","-ce"]
+      args: ["rm -f /var/lib/gitea/app.ini &&
+              cp /tmp/app.ini /var/lib/gitea/app.ini &&
+              chown -R 1000:1000 /var/lib/gitea &&
+              sed -i \"78s/^$/USER = $POSTGRES_USER/\" /var/lib/gitea/app.ini &&
+              sed -i \"81s/^$/PASSWD = $POSTGRES_PASSWD/\" /var/lib/gitea/app.ini &&
+              SECRET_KEY=$(cat /dev/random | tr -cd '[:alnum:]' | head -c 64) &&
+              sed -i \"s/PUT_RANDOM_SECRET_KEY_HERE/$SECRET_KEY/\" /var/lib/gitea/app.ini"]
+    setup-rootless:
+      name: setup-rootless
+      image:
+        repository: baseos/alpine
+        tag: 3.13
+      env:
+      volumeMounts:
+      - name: vcs-data-vol
+        mountPath: /var/lib/gitea
+      # At least for now, to support upgrades, the setup init containers must run as root.
+      securityContext:
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+      command: ["/bin/sh","-ce"]
+      args: ["if [ -d /var/lib/gitea/gitea ];
+              then mv /var/lib/gitea/gitea /var/lib/gitea/custom;
+              fi &&
+              if [ ! -d /var/lib/gitea/data ];
+              then mkdir /var/lib/gitea/data;
+              fi &&
+              if [ -d /var/lib/gitea/git/gitea-repositories ];
+              then mv /var/lib/gitea/git/gitea-repositories /var/lib/gitea/data/gitea-repositories;
+              fi &&
+              touch /var/lib/gitea/regenerate-hooks &&
+              chown -R 1000:1000 /var/lib/gitea"]
   sqlCluster:
     enabled: true
     instanceCount: 3
