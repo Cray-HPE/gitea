@@ -87,7 +87,7 @@ cray-service:
       name: setup-config
       image:
         repository: artifactory.algol60.net/docker.io/library/alpine
-        tag: 3.13.5
+        tag: 3.13
       env:
       - name: POSTGRES_USER
         valueFrom:
@@ -121,7 +121,7 @@ cray-service:
       name: setup-rootless
       image:
         repository: artifactory.algol60.net/docker.io/library/alpine
-        tag: 3.13.5
+        tag: 3.13
       env:
       volumeMounts:
       - name: vcs-data-vol

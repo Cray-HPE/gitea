@@ -22,7 +22,7 @@ annotations:
     - name: gitea
       image: artifactory.algol60.net/csm-docker/stable/docker.io/gitea/gitea:0.0.0-gitea
     - name: alpine
-      image: artifactory.algol60.net/docker.io/library/alpine:3.13.5
+      image: artifactory.algol60.net/docker.io/library/alpine:3.13
     - name: alpine
       image: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup:1.0.0
   artifacthub.io/license: MIT
