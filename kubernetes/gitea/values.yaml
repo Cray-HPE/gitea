@@ -165,5 +165,5 @@ keycloakMasterAdminSecretName: keycloak-master-admin-auth
 keycloakBase: http://cray-keycloak-http/keycloak
 keycloakImage:
   repository: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup
-  tag: 1.0.0
+  tag: 3.1.1
   pullPolicy: IfNotPresent
