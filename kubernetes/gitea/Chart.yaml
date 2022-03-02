@@ -1,14 +1,28 @@
-apiVersion: v1
-description: Cray VCS
+apiVersion: v2
 name: gitea
-home: "scms/gitea"
-version: @CHART_VERSION@
-description: "Kubernetes resources for gitea"
+version: 0.0.0-chart
+description: Kubernetes resources for gitea
 keywords:
-  - gitea
-  - vcs
+- gitea
+- vcs
+home: https://github.com/Cray-HPE/gitea
 sources:
-  - "https://github.com/Cray-HPE/gitea"
+- https://github.com/Cray-HPE/gitea
+dependencies:
+- name: cray-service
+  version: ^7.0.0
+  repository: https://artifactory.algol60.net/artifactory/csm-helm-charts/
 maintainers:
-  - name: rkleinman
-    email: rkleinman@cray.com
+- name: rbak-hpe
+  email: ryan.bak@hpe.com
+- name: rkleinman-hpe
+  email: randy.kleinman@hpe.com
+annotations:
+  artifacthub.io/images: |
+    - name: gitea
+      image: artifactory.algol60.net/csm-docker/stable/docker.io/gitea/gitea:0.0.0-gitea
+    - name: alpine
+      image: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine:3.13
+    - name: cray-keycloak-setup
+      image: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup:3.1.1
+  artifacthub.io/license: MIT

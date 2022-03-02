@@ -23,8 +23,8 @@ cray-service:
     vcs:
       name: vcs
       image:
-        repository: docker.io/gitea/gitea
-        tag: @GITEA_DOCKER_VERSION@
+        repository: artifactory.algol60.net/csm-docker/stable/docker.io/gitea/gitea
+        tag: 0.0.0-gitea
       ports:
       - name: http
         containerPort: 3000
@@ -86,7 +86,7 @@ cray-service:
     setup-config:
       name: setup-config
       image:
-        repository: baseos/alpine
+        repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
         tag: 3.13
       env:
       - name: POSTGRES_USER
@@ -109,7 +109,7 @@ cray-service:
         runAsGroup: 0
         runAsNonRoot: false
         runAsUser: 0
-      command: ["/bin/sh","-ce"]
+      command: ["/bin/sh", "-ce"]
       args: ["rm -f /var/lib/gitea/app.ini &&
               cp /tmp/app.ini /var/lib/gitea/app.ini &&
               chown -R 1000:1000 /var/lib/gitea &&
@@ -120,7 +120,7 @@ cray-service:
     setup-rootless:
       name: setup-rootless
       image:
-        repository: baseos/alpine
+        repository: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine
         tag: 3.13
       env:
       volumeMounts:
@@ -131,7 +131,7 @@ cray-service:
         runAsGroup: 0
         runAsNonRoot: false
         runAsUser: 0
-      command: ["/bin/sh","-ce"]
+      command: ["/bin/sh", "-ce"]
       args: ["if [ -d /var/lib/gitea/gitea ];
               then mv /var/lib/gitea/gitea /var/lib/gitea/custom;
               fi &&
@@ -154,7 +154,7 @@ cray-service:
       service_db: service_account
     backup:
       enabled: true
-      schedule: "10 1 * * *" # Once per day at 1:10AM
+      schedule: "10 1 * * *"  # Once per day at 1:10AM
   ingress:
     enabled: false
     # turning off base chart for ingress
@@ -164,6 +164,6 @@ cray-service:
 keycloakMasterAdminSecretName: keycloak-master-admin-auth
 keycloakBase: http://cray-keycloak-http/keycloak
 keycloakImage:
-  repository: dtr.dev.cray.com/cray/cray-keycloak-setup
-  tag: latest
-  pullPolicy: Always
+  repository: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup
+  tag: 3.1.1
+  pullPolicy: IfNotPresent
