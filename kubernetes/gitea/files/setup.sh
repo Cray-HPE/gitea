@@ -1,5 +1,8 @@
 #!/bin/bash
-# Copyright 2019-2021 Hewlett Packard Enterprise Development LP
+#
+# MIT License
+#
+# (C) Copyright 2019-2022 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -13,14 +16,12 @@
 #
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
 # THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 # OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
-# (MIT License)
-
 # Create the admin user for gitea
 echo `date` >> /data/gitea/setup
 rm -f /data/git/.gitconfig.lock
@@ -62,13 +63,15 @@ CRAYVCS_PASSWORD=$(</mnt/crayvcs-credentials/vcs_password)
 CRAYVCS_USER_EMAIL="${CRAYVCS_USER}@mgmt-plane-nmn.local"
 cd /data/gitea
 echo "Running in `pwd`" >> /data/gitea/setup
+# The password argument must go last because if it happens to begin with
+# a dash, it causes problems if it is not last.
 /app/gitea/gitea admin create-user \
     --config /data/gitea/conf/app.ini \
     --name ${CRAYVCS_USER} \
-    --password ${CRAYVCS_PASSWORD} \
     --admin \
     --must-change-password=false \
-    --email "${CRAYVCS_USER_EMAIL}" &>> /data/gitea/setup
+    --email "${CRAYVCS_USER_EMAIL}" \
+    --password "${CRAYVCS_PASSWORD}" &>> /data/gitea/setup
 
 RESULT=$?
 if [ $RESULT == 0 ]; then
