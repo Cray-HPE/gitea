@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- CASMINST-5250 - fix gitea user creation to handle passwords with leading '-'
+- CASMPET-5864 - update keycloak-setup default image version.
 
 ### Removed
 

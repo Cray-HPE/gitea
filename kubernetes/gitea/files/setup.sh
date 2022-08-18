@@ -81,7 +81,7 @@ echo "Running in `pwd`" >> $LOG_FILE
     --admin \
     --must-change-password=false \
     --email "${CRAYVCS_USER_EMAIL}" \
-    --password "${CRAYVCS_PASSWORD}" &>> $LOG_FILE
+    --password="${CRAYVCS_PASSWORD}" &>> $LOG_FILE
 
 RESULT=$?
 if [ $RESULT == 0 ]; then
