@@ -178,6 +178,8 @@ cray-service:
     backup:
       enabled: true
       schedule: "10 1 * * *"  # Once per day at 1:10AM
+    tls:
+      enabled: true
   ingress:
     enabled: false
     # turning off base chart for ingress
