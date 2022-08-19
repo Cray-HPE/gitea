@@ -47,5 +47,5 @@ annotations:
     - name: alpine
       image: artifactory.algol60.net/csm-docker/stable/docker.io/library/alpine:3.13
     - name: cray-keycloak-setup
-      image: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup:3.1.1
+      image: artifactory.algol60.net/csm-docker/stable/cray-keycloak-setup:3.6.1
   artifacthub.io/license: MIT
