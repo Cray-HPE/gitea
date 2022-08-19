@@ -73,13 +73,15 @@ CRAYVCS_PASSWORD=$(</mnt/crayvcs-credentials/vcs_password)
 CRAYVCS_USER_EMAIL="${CRAYVCS_USER}@mgmt-plane-nmn.local"
 cd ${DATA_MOUNT}/custom
 echo "Running in `pwd`" >> $LOG_FILE
+# The password argument must go last because if it happens to begin with
+# a dash, it causes problems if it is not last.
 /usr/local/bin/gitea admin user create \
     --config ${DATA_MOUNT}/app.ini \
     --username ${CRAYVCS_USER} \
-    --password ${CRAYVCS_PASSWORD} \
     --admin \
     --must-change-password=false \
-    --email "${CRAYVCS_USER_EMAIL}" &>> $LOG_FILE
+    --email "${CRAYVCS_USER_EMAIL}" \
+    --password="${CRAYVCS_PASSWORD}" &>> $LOG_FILE
 
 RESULT=$?
 if [ $RESULT == 0 ]; then
