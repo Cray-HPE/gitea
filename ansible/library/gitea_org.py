@@ -59,7 +59,7 @@ options:
         required: false
     login_user:
         description:
-            - The gitea user name to create the organizationo
+            - The gitea user name to create the organization
             - Required if using basic auth
         required: false
     login_password:
