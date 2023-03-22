@@ -1,7 +1,7 @@
 #
 # MIT License
 #
-# (C) Copyright 2021-2022 Hewlett Packard Enterprise Development LP
+# (C) Copyright 2021-2023 Hewlett Packard Enterprise Development LP
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -122,6 +122,10 @@ cray-service:
           secretKeyRef:
             name: service-account.gitea-vcs-postgres.credentials
             key: password
+      - name: POSTGRES_HOST
+        value: cray-console-data-postgres
+      - name: POSTGRES_PORT
+        value: "5432"
       volumeMounts:
       - name: vcs-data-vol
         mountPath: /var/lib/gitea
@@ -166,24 +170,26 @@ cray-service:
               fi &&
               touch /var/lib/gitea/regenerate-hooks &&
               chown -R 1000:1000 /var/lib/gitea"]
+  ingress:
+    enabled: false
+    # turning off base chart for ingress
+    # CASMCMS-3716 to enable
+
+cray-postgresql:
+  nameOverride: vcs
   sqlCluster:
     enabled: true
     instanceCount: 3
-    postgresVersion: "11"
     volumeSize: 50Gi
     users:
       service_account: []
     databases:
       service_db: service_account
-    backup:
-      enabled: true
-      schedule: "10 1 * * *"  # Once per day at 1:10AM
+    sqlCluster:
+      enableLogicalBackup: true
+      logicalBackupSchedule: "10 1 * * *"  # Once per day at 1:10AM
     tls:
       enabled: true
-  ingress:
-    enabled: false
-    # turning off base chart for ingress
-    # CASMCMS-3716 to enable
 
 # For adding the default vcs user to keycloak
 keycloakMasterAdminSecretName: keycloak-master-admin-auth
