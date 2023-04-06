@@ -185,9 +185,8 @@ cray-postgresql:
       service_account: []
     databases:
       service_db: service_account
-    sqlCluster:
-      enableLogicalBackup: true
-      logicalBackupSchedule: "10 1 * * *"  # Once per day at 1:10AM
+    enableLogicalBackup: true
+    logicalBackupSchedule: "10 1 * * *"  # Once per day at 1:10AM
     tls:
       enabled: true
 
