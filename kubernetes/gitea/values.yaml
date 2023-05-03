@@ -32,8 +32,6 @@
 
 externalHostname: vcs.local
 uriPrefix: /vcs
-global:
-  authGateway: services/services-gateway
 
 cray-service:
   storageClass: ceph-cephfs-external
