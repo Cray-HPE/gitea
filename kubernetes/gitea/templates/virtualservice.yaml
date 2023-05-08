@@ -34,6 +34,7 @@ metadata:
 spec:
   gateways:
   - services-gateway
+  - customer-admin-gateway
   hosts:
   - '*'
   http:
@@ -60,7 +61,8 @@ metadata:
     app.kubernetes.io/name: gitea-vcs
 spec:
   gateways:
-  - {{ .Values.global.authGateway }}
+  - services-gateway
+  - customer-admin-gateway
   hosts:
   - {{ .Values.externalHostname }}
   http:
