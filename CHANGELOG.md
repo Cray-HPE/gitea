@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [2.6.3] - 2023-05-17
+
+### Fixed
+
+- CASMPET-6571 - Fixed incorrect POSTGRES_HOST value.
+
 ## [2.6.2] - 2023-05-03
 
 ### Changed
