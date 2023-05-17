@@ -121,7 +121,7 @@ cray-service:
             name: service-account.gitea-vcs-postgres.credentials
             key: password
       - name: POSTGRES_HOST
-        value: cray-console-data-postgres
+        value: gitea-vcs-postgres
       - name: POSTGRES_PORT
         value: "5432"
       volumeMounts:
