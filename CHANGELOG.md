@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Dependencies
 - Bump `actions/checkout` from 3 to 4 ([#53](https://github.com/Cray-HPE/gitea/pull/53))
+- Bump `stefanzweifel/git-auto-commit-action` from 4 to 5 ([#54](https://github.com/Cray-HPE/gitea/pull/54))
 
 ## [2.6.3] - 2023-05-17
 
