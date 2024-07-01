@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Disabled concurrent Jenkins builds on same branch/commit
 - Added build timeout to avoid hung builds
+- Replaced Randy Kleinman with Mitch Harding as maintainter
 
 ### Dependencies
 - CASMCMS-9011: Bump `cray-keycloak-setup` version from 3.6.1 to 3.7.X; use `update_external_versions` to find latest 3.7.X version
