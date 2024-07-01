@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Disabled concurrent Jenkins builds on same branch/commit
 - Added build timeout to avoid hung builds
+- Replaced Randy Kleinman with Mitch Harding as maintainter
 
 ### Dependencies
 - Bump `actions/checkout` from 3 to 4 ([#53](https://github.com/Cray-HPE/gitea/pull/53))

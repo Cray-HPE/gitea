@@ -41,8 +41,8 @@ dependencies:
 maintainers:
 - name: rbak-hpe
   email: ryan.bak@hpe.com
-- name: rkleinman-hpe
-  email: randy.kleinman@hpe.com
+- name: mharding-hpe
+  email: mitchell.harding@hpe.com
 annotations:
   artifacthub.io/images: |
     - name: gitea
