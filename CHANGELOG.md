@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump `actions/checkout` from 3 to 4 ([#53](https://github.com/Cray-HPE/gitea/pull/53))
 - Bump `stefanzweifel/git-auto-commit-action` from 4 to 5 ([#54](https://github.com/Cray-HPE/gitea/pull/54))
 - CASMCMS-9011: Bump `cray-keycloak-setup` version from 3.6.1 to 3.7.X; use `update_external_versions` to find latest 3.7.X version
+- Bump `cray-service` base chart version from 8.2.0 to 10.0.5
 
 ## [2.6.3] - 2023-05-17
 
