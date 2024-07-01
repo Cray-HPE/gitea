@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.4] - 2024-07-01
+
 ### Changed
 
 - Disabled concurrent Jenkins builds on same branch/commit
