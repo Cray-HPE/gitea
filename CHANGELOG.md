@@ -6,11 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Dependencies
+- CASMCMS-9133 - update the cray-service base chart to 11.0.0 for k8s 1.24.
 
 ## [2.7.0] - 2024-07-01
 
 ### Changed
-
 - Disabled concurrent Jenkins builds on same branch/commit
 - Added build timeout to avoid hung builds
 - Replaced Randy Kleinman with Mitch Harding as maintainter
