@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Dependencies
+- CASMCMS-9250 - update the cray-service base chart to 11.0.1 for k8s 1.30.
+
 ## [2.8.0] - 2024-09-09
 
 ### Dependencies
