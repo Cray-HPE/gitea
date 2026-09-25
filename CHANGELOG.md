@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Dependencies
 - Bump `stefanzweifel/git-auto-commit-action` from 5 to 7 ([#71](https://github.com/Cray-HPE/gitea/pull/71))
-- Bump `actions/checkout` from 4 to 6 ([#70](https://github.com/Cray-HPE/gitea/pull/70), [#72](https://github.com/Cray-HPE/gitea/pull/72))
+- Bump `actions/checkout` from 4 to 7 ([#70](https://github.com/Cray-HPE/gitea/pull/70), [#72](https://github.com/Cray-HPE/gitea/pull/72), [#73](https://github.com/Cray-HPE/gitea/pull/73))
 
 ## [2.9.1] - 2025-07-03
 
